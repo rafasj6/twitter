@@ -6,11 +6,17 @@
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         -->
+        <item name="android:actionMenuTextColor">@color/light_gray</item>
+        <item name="colorPrimary">@color/twitter_blue</item>
+        <item name="android:textColorPrimary">@color/light_gray</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
 
 </resources>

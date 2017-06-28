@@ -30,6 +30,8 @@ public class ComposeActivity extends AppCompatActivity {
     private TextView sms_count;
     EditText text;
     TextView tvCharactersLeft;
+    String replyTo;
+    long uid;
 
 
     @Override
@@ -38,7 +40,11 @@ public class ComposeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_compose);
         text = (EditText) findViewById(R.id.etTweetText);
         tvCharactersLeft =  (TextView) findViewById(R.id.tvCharactersLeft);
+        replyTo = (getIntent().getStringExtra("user")!= null)? "@" + getIntent().getStringExtra("user"):"" ;
+        uid =  (getIntent().getStringExtra("uid")!= null)? Long.valueOf(getIntent().getStringExtra("uid")):-1 ;
 
+
+        text.setText(replyTo);
         client = TwitterApp.getRestClient();
         final TextWatcher mTextEditorWatcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -59,7 +65,7 @@ public class ComposeActivity extends AppCompatActivity {
     public void post(View v){
 
         tweetText = text.getText().toString();
-            client.sendTweet(tweetText, new JsonHttpResponseHandler(){
+            client.sendTweet(tweetText, uid,  new JsonHttpResponseHandler(){
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

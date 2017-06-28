@@ -1,11 +1,13 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +18,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+
+import static com.codepath.apps.restclienttemplate.ComposeActivity.TWEET_KEY;
 
 /**
  * Created by rafasj6 on 6/26/17.
@@ -47,7 +51,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     //bind the valies based on pos of elemt in list
 
-    public String getRelativeTimeAgo(String rawJsonDate) {
+    public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
@@ -93,12 +97,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
 //create viewholder class
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvTimeStamp;
+        public ImageButton ibReply;
 
 
         public  ViewHolder (View itemView) {
@@ -107,6 +112,38 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername =  (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody =  (TextView) itemView.findViewById(R.id.tvBody);
+            ibReply = (ImageButton) itemView.findViewById(R.id.ibReply);
+            ibReply.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            // gets item position
+            Intent intent;
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position, this won't work if the class is static
+                Tweet tweet = mTweets.get(position);
+                // create intent for the new activity
+                if (view == ibReply) {
+                    intent = new Intent(context, ComposeActivity.class);
+                    // serialize the movie using parceler, use its short name as a key
+                    intent.putExtra("user", tweet.user.sreenName);
+                    intent.putExtra("uid", String.valueOf(tweet.uid));
+
+                }
+                else{
+                    intent = new Intent(context, TweetDetailActivity.class);
+                    intent.putExtra(TWEET_KEY, tweet);
+
+                }
+
+                // show the activity
+                context.startActivity(intent);
+            }
         }
     }
 }

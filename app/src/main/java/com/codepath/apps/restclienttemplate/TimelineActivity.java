@@ -37,15 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE = 20;
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // Store instance of the menu item containing progress
-        miActionProgressItem = menu.findItem(R.id.miActionProgress);
-        // Extract the action-view from the menu item
-        ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
-        // Return to finish
-        return super.onPrepareOptionsMenu(menu);
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +53,6 @@ public class TimelineActivity extends AppCompatActivity {
 
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetAdapter);
-
 
         populateTimeline();
 
@@ -86,7 +77,7 @@ public class TimelineActivity extends AppCompatActivity {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
         // getHomeTimeline is an example endpoint.
-
+        showProgressBar();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
 
             @Override
@@ -105,6 +96,28 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Extract the action-view from the menu item
+        ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void showProgressBar() {
+        // Show progress item
+
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -118,6 +131,7 @@ public class TimelineActivity extends AppCompatActivity {
             // handle click here
         Intent i = new Intent(this, ComposeActivity.class);
         startActivityForResult(i, REQUEST_CODE);
+
         }
 
     @Override
@@ -136,6 +150,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void populateTimeline(){
+        //showProgressBar();
         client.getHomeTimeline(new JsonHttpResponseHandler(){
 
             @Override
@@ -148,7 +163,6 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("TwitterClient", response.toString());
-
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
@@ -158,6 +172,7 @@ public class TimelineActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                hideProgressBar();
             }
 
             @Override
