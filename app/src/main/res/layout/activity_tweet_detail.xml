@@ -46,6 +46,24 @@
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/ic_menu_revert"
         android:layout_below="@+id/tvBody"
-        android:layout_toEndOf="@+id/ivProfileImage" />
+        android:layout_toEndOf="@+id/ivProfileImage"
+        />
+
+    <ImageView
+        android:id="@+id/ivFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/star_big_off"
+        android:layout_below="@+id/tvBody"
+        android:layout_alignParentEnd="true"
+        android:onClick="favorite"/>
+
+    <TextView
+        android:id="@+id/tvHandle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvUserName"
+        android:text="TextView" />
 
 </RelativeLayout>

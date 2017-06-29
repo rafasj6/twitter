@@ -83,6 +83,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
+        holder.tvHandle.setText(tweet.user.sreenName);
         holder.tvTimeStamp.setText( getRelativeTimeAgo(tweet.createdAt));
 
         Glide.with(context)
@@ -104,11 +105,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvBody;
         public TextView tvTimeStamp;
         public ImageButton ibReply;
-
+        public TextView tvHandle;
 
         public  ViewHolder (View itemView) {
             super(itemView);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
+            tvHandle = (TextView) itemView.findViewById(R.id.tvHandle);
+
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername =  (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody =  (TextView) itemView.findViewById(R.id.tvBody);

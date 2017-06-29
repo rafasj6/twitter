@@ -19,7 +19,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="15dp"/>
 
     <TextView
         android:id="@+id/tvBody"
@@ -38,7 +39,8 @@
         android:layout_above="@+id/tvBody"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:text="TextView" />
+        android:text="TextView"
+        />
 
     <ImageButton
         android:id="@+id/ibReply"
@@ -47,5 +49,14 @@
         app:srcCompat="@android:drawable/ic_menu_revert"
         android:layout_below="@+id/tvBody"
         android:layout_toEndOf="@+id/ivProfileImage" />
+
+    <TextView
+        android:id="@+id/tvHandle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvUserName"
+        android:text="handle"
+        android:layout_above="@+id/tvBody" />
 
 </RelativeLayout>
