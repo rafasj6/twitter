@@ -20,6 +20,7 @@
         android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView"
+        android:textStyle="bold"
         android:textSize="15dp"/>
 
     <TextView

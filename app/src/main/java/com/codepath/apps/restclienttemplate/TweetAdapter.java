@@ -95,6 +95,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvHandle.setText("@" + tweet.user.sreenName);
         holder.tvTimeStamp.setText( getRelativeTimeAgo(tweet.createdAt));
         holder.ivFavorite.setSelected(tweet.favorited);
+        holder.ivRetweet.setSelected(tweet.retweeted);
+
 
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
@@ -195,39 +197,35 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         }
 
         public void retweet(final Tweet tweet) {
-            // if (tweet.retweeted == false){
-            client.sendRetweet(tweet.uid, new JsonHttpResponseHandler() {
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d("retweeted", response.toString());
-
-                    ivRetweet.setSelected(true);
-                    //tweet.retweeted = true;
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d("TwitterClient", errorResponse.toString());
-                    throwable.printStackTrace();
-                }
-            });//}
-        }
-
-          /*  else{
-                client.sendUnfavorite(tweet.uid, new JsonHttpResponseHandler(){
+            if (tweet.retweeted == false) {
+                client.sendRetweet(tweet.uid, new JsonHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("TwitterClient", response.toString());
+                        Log.d("retweeted", response.toString());
+
+                        ivRetweet.setSelected(true);
+                        tweet.retweeted = true;
+
+                    }
 
 
-                        //tweet = Tweet.fromJSON(response);
-                        //Log.d("COMPOSE.activity", tweet.body);
-                        Toast.makeText(context, "favorited!", Toast.LENGTH_LONG);
-                        ivFavorite.setSelected(false);
-                        tweet.favorited = false;
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Log.d("TwitterClient", errorResponse.toString());
+                        throwable.printStackTrace();
+                    }
+                });//}
+            }
+            else {
+                client.sendUnRetweet(tweet.uid, new JsonHttpResponseHandler() {
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d("Untweeted", response.toString());
+
+                        ivRetweet.setSelected(false);
+                        tweet.retweeted = false;
 
 
                     }
@@ -243,7 +241,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                     }
 
                 });
-            }*/
+            }
+        }
 
 
 

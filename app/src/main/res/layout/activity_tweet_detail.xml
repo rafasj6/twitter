@@ -19,6 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:textStyle="bold"
         android:text="TextView" />
 
     <TextView
@@ -49,7 +50,8 @@
         android:layout_below="@+id/tvBody"
         android:tint="@color/medium_gray"
         android:layout_toEndOf="@+id/ivProfileImage"
-        app:srcCompat="@drawable/ic_vector_compose" />
+        app:srcCompat="@drawable/ic_vector_compose"
+        android:onClick="reply"/>
 
     <ImageView
         android:id="@+id/ibFavorite"
@@ -69,5 +71,16 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/tvUserName"
         android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/background_material_light"
+        android:tint="@color/medium_green"
+        android:layout_below="@+id/tvBody"
+        android:onClick="retweet"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_retweet" />
 
 </RelativeLayout>
