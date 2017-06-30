@@ -2,8 +2,8 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,12 +12,14 @@ import org.json.JSONObject;
  */
 
 public class Tweet implements Parcelable {
+    private static JSONArray media_temp;
     public String body;
     public long uid; //database id for tweet
     public String createdAt;
     public User user;
     public boolean favorited;
     public boolean retweeted;
+    public String media;
 
     //deserialize
 
@@ -31,8 +33,8 @@ public class Tweet implements Parcelable {
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.favorited = jsonObject.getBoolean("favorited");
         tweet.retweeted = jsonObject.getBoolean("retweeted");
-
-        Log.d("Tweet class", String.valueOf(tweet.favorited));
+        media_temp = jsonObject.getJSONObject("entities").optJSONArray("media");
+        tweet.media = (media_temp!= null) ? media_temp.getJSONObject(0).getString("media_url"): "";
 
         return tweet;
 

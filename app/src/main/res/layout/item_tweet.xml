@@ -51,8 +51,11 @@
         android:backgroundTint="@color/background_material_light"
         android:tint="@color/medium_gray"
         app:srcCompat="@drawable/ic_vector_compose"
-        android:layout_below="@+id/tvBody"
-        android:layout_alignStart="@+id/tvBody" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ivMedia"
+        android:layout_alignStart="@+id/ivMedia" />
+
+
 
     <TextView
         android:id="@+id/tvHandle"
@@ -68,11 +71,12 @@
         android:id="@+id/ivFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:backgroundTint="@color/background_material_light"
         android:tint="@color/medium_red"
-        android:layout_below="@+id/tvBody"
-        app:srcCompat="@drawable/ic_heart" />
+        app:srcCompat="@drawable/ic_heart"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ivMedia"
+        android:layout_alignParentEnd="true" />
 
     <ImageView
         android:id="@+id/ivRetweet"
@@ -80,8 +84,18 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/background_material_light"
         android:tint="@color/medium_green"
+        app:srcCompat="@drawable/ic_retweet"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/ivMedia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_launcher"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/tvBody"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_retweet" />
+        android:layout_alignStart="@+id/tvBody"
+        android:visibility="gone"/>
 
 </RelativeLayout>

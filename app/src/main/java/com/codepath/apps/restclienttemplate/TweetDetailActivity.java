@@ -31,6 +31,7 @@ public class TweetDetailActivity extends AppCompatActivity {
     public TwitterClient client;
     public TextView tvHandle;
     public ImageView ivRetweet;
+    public ImageView ivMedia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         tvHandle = (TextView) findViewById(R.id.tvHandle);
         tvTimeStamp = (TextView) findViewById(R.id.tvTimeStamp);
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        ivMedia = (ImageView) findViewById(R.id.ivMedia);
         ivRetweet = (ImageView) findViewById(R.id.ivRetweet);
         tvUsername = (TextView) findViewById(R.id.tvUserName);
         tvBody = (TextView) findViewById(R.id.tvBody);
@@ -47,21 +49,33 @@ public class TweetDetailActivity extends AppCompatActivity {
         ibFavorite.setSelected(tweet.favorited);
         ivRetweet.setSelected(tweet.retweeted);
 
-        Log.d("Tweet detail", String.valueOf(tweet.favorited));
+
+        Log.d("Tweet detail", String.valueOf(tweet.media));
         client = TwitterApp.getRestClient();
 
         //ibReply.setOnClickListener((View.OnClickListener) this);
 
 
         tvUsername.setText(tweet.user.name);
-        tvHandle.setText("@"+tweet.user.sreenName);
+        tvHandle.setText("@" + tweet.user.sreenName);
         tvBody.setText(tweet.body);
-        tvTimeStamp.setText( TweetAdapter.getRelativeTimeAgo(tweet.createdAt));
+        tvTimeStamp.setText(TweetAdapter.getRelativeTimeAgo(tweet.createdAt));
 
         Glide.with(this)
                 .load(tweet.user.profileImageUrl)
                 .into(this.ivProfileImage);
 
+        if (tweet.media != "") {
+            ivMedia.setVisibility(View.VISIBLE);
+
+            Glide.with(this)
+                    .load(tweet.media)
+                    .into(ivMedia);
+        } else {
+            ivMedia.setVisibility(View.VISIBLE);
+
+
+        }
     }
     @Override
     public void onBackPressed() {

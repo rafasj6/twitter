@@ -14,12 +14,14 @@
 
     <Button
         android:id="@+id/btnPost"
+        android:textColor="#FFFFFF"
+        android:background="@color/twitter_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:onClick="post"
-        android:text="Post" />
+        android:text="Tweet" />
 
     <TextView
         android:id="@+id/tvCharactersLeft"

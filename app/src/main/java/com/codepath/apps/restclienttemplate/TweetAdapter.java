@@ -96,8 +96,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvTimeStamp.setText( getRelativeTimeAgo(tweet.createdAt));
         holder.ivFavorite.setSelected(tweet.favorited);
         holder.ivRetweet.setSelected(tweet.retweeted);
+        Log.d("Tweet media: ", String.valueOf(tweet.media));
+
+        if (tweet.media != "") {
+            holder.ivMedia.setVisibility(View.VISIBLE);
+
+            Glide.with(context)
+                    .load(tweet.media)
+                    .into(holder.ivMedia);
+        }
+        else{
+            holder.ivMedia.setVisibility(View.GONE);
 
 
+        }
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
                 .into(holder.ivProfileImage);
@@ -120,12 +132,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvHandle;
         public ImageView ivFavorite;
         public ImageView ivRetweet;
+        public ImageView ivMedia;
 
         public  ViewHolder (View itemView) {
             super(itemView);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             tvHandle = (TextView) itemView.findViewById(R.id.tvHandle);
-
+            ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername =  (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody =  (TextView) itemView.findViewById(R.id.tvBody);
