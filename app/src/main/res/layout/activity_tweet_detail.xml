@@ -40,23 +40,27 @@
         android:layout_alignParentTop="true"
         android:text="TextView" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/ibReply"
         android:layout_width="wrap_content"
+        android:clickable="true"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_revert"
+        android:backgroundTint="@color/background_material_light"
         android:layout_below="@+id/tvBody"
+        android:tint="@color/medium_gray"
         android:layout_toEndOf="@+id/ivProfileImage"
-        />
+        app:srcCompat="@drawable/ic_vector_compose" />
 
     <ImageView
-        android:id="@+id/ivFavorite"
+        android:id="@+id/ibFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/star_big_off"
-        android:layout_below="@+id/tvBody"
         android:layout_alignParentEnd="true"
-        android:onClick="favorite"/>
+        android:backgroundTint="@color/background_material_light"
+        android:tint="@color/medium_red"
+        android:layout_below="@+id/tvBody"
+        android:onClick="favorite"
+        app:srcCompat="@drawable/ic_heart" />
 
     <TextView
         android:id="@+id/tvHandle"
