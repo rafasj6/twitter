@@ -46,7 +46,7 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [ if user likes something in the details, it shows in the main timeline if you go back] List anything else that you can get done to improve the app functionality!
 
 ## Video Walkthrough
 
