@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TweetAdapter;
@@ -57,6 +56,6 @@ public class TweetsListFragments extends android.support.v4.app.Fragment impleme
     @Override
     public void onItemSelected(View v, int position) {
         Tweet tweet = tweets.get(position);
-        Toast.makeText(getContext(), tweet.body, Toast.LENGTH_LONG);
+        //Toast.makeText(getContext(), tweet.body, Toast.LENGTH_LONG);
     }
 }

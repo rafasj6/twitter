@@ -195,7 +195,7 @@ public class TimelineActivity extends AppCompatActivity {
             Log.d("onActivityResult, ", "tweet is null?" + String.valueOf( tweet== null));
 
 
-            ((HomeTimelineFragment) pagerAdapter.getItem(viewPager.getCurrentItem())).addTweet(tweet);
+            pagerAdapter.homeTimelineFragment.addTweet(tweet);
             // Toast the name to display temporarily on screen
             Toast.makeText(this, "Tweet Posted", Toast.LENGTH_SHORT).show();
         }
