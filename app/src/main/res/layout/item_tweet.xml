@@ -4,13 +4,7 @@
     android:layout_margin="5dp"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/ic_launcher" />
+
 
     <TextView
         android:id="@+id/tvUserName"
@@ -31,7 +25,9 @@
         android:text="TextView"
         android:layout_below="@+id/tvUserName"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/tvUserName" />
+        android:layout_alignStart="@+id/tvUserName"
+        android:autoLink="all"
+        />
 
     <TextView
         android:id="@+id/tvTimeStamp"
@@ -51,7 +47,6 @@
         android:backgroundTint="@color/background_material_light"
         android:tint="@color/medium_gray"
         app:srcCompat="@drawable/ic_vector_compose"
-        android:layout_alignParentBottom="true"
         android:layout_below="@+id/ivMedia"
         android:layout_alignStart="@+id/ivMedia" />
 
@@ -74,7 +69,6 @@
         android:backgroundTint="@color/background_material_light"
         android:tint="@color/medium_red"
         app:srcCompat="@drawable/ic_heart"
-        android:layout_alignParentBottom="true"
         android:layout_below="@+id/ivMedia"
         android:layout_alignParentEnd="true" />
 
@@ -85,17 +79,26 @@
         android:backgroundTint="@color/background_material_light"
         android:tint="@color/medium_green"
         app:srcCompat="@drawable/ic_retweet"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ivMedia"
         android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/ivMedia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_launcher"
         android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/tvUserName"
         android:layout_below="@+id/tvBody"
-        android:layout_alignStart="@+id/tvBody"
-        android:visibility="gone"/>
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

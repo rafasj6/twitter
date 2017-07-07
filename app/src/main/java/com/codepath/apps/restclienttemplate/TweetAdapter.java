@@ -35,16 +35,24 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     //pass tweet array to constructor
     Context context;
-    private List<Tweet> mTweets;
-    public TweetAdapter(List<Tweet> tweets){
-    mTweets = tweets;
+    public List<Tweet> mTweets;
+    private TweetAdapterListener mListener;
+
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener)
+    {
+        mTweets = tweets;
+        mListener = listener;
     }
+
     TwitterClient client = TwitterApp.getRestClient();
 
 
 
+//infalte each row into viewholder
 
-    //infalte each row into viewholder
+    public interface TweetAdapterListener{
+        public void onItemSelected(View v, int position);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -110,6 +118,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
 
         }
+
+
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
                 .into(holder.ivProfileImage);
@@ -151,6 +161,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             itemView.setOnClickListener(this);
             ivFavorite.setOnClickListener(this);
             ivRetweet.setOnClickListener(this);
+            ivProfileImage.setOnClickListener(this);
 
         }
         public void favorite(final Tweet tweet){
@@ -279,16 +290,30 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                     intent.putExtra("uid", String.valueOf(tweet.uid));
 
                 }
-                else if (view == itemView){
-                    intent = new Intent(context, TweetDetailActivity.class);
-                    intent.putExtra(TWEET_KEY, tweet);
 
-                }
+
 
                 else if (view == ivRetweet){
                     retweet(tweet);
                     return;
                 }
+
+                else if (view == itemView){
+                    Log.d("Item VIew", "clicked");
+                    intent = new Intent(context, TweetDetailActivity.class);
+                    intent.putExtra(TWEET_KEY, tweet);
+                }
+                else if (view == ivProfileImage){
+
+
+                    intent = new Intent(context, ProfileActivity.class);
+                    Log.d("ivProfileImage", "clicked");
+                    intent.putExtra("screen_name", tweet.user.sreenName);
+                }
+
+
+
+
                 else{
                     favorite(tweet);
                     return;

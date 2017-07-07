@@ -9,6 +9,9 @@ import com.github.scribejava.core.builder.api.BaseApi;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /*
  * 
  * This is the object responsible for communicating with a REST API. 
@@ -51,6 +54,55 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("since_id",1); // in future for efresh;
 		client.get(apiUrl, params, handler);
 	}
+
+	public void getMentionsTimeline (AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getUserTimeline (String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("screen_name", screenName);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getUserInfo (AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		// Can specify query string params directly or through RequestParams.
+
+		client.get(apiUrl, null, handler);
+	}
+
+	public void getUserProfile (String selfScreenName, String userScreenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("users/show.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("user_id", selfScreenName);
+		params.put("screen_name", userScreenName);
+		client.get(apiUrl, params, handler);
+	}
+
+
+	public void getSearchResults (String q,  AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("search/tweets.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		Log.d("Search Results", q);
+		try {
+			params.put("q", URLEncoder.encode(q, "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+
+		}
+		client.get(apiUrl, params, handler);
+	}
+
+
 
 	public void sendTweet(String message, long reply_id,  AsyncHttpResponseHandler handler) {
 		Log.d("Twitter Client", message);

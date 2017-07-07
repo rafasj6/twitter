@@ -30,7 +30,9 @@
         android:text="TextView"
         android:layout_below="@+id/tvUserName"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/tvUserName" />
+        android:layout_alignStart="@+id/tvUserName"
+        android:autoLink="all"
+        />
 
     <TextView
         android:id="@+id/tvTimeStamp"

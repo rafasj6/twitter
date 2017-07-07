@@ -77,12 +77,13 @@ public class TweetDetailActivity extends AppCompatActivity {
 
         }
     }
-    @Override
+   /* @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, TimelineActivity.class);
         intent.putExtra("tweet", tweet);
         startActivity(intent);
     }
+    */
 
     public void reply(View v){
 

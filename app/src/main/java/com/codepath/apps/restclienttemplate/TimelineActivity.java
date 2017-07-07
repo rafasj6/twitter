@@ -1,12 +1,14 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,25 +16,21 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import cz.msebera.android.httpclient.Header;
+import fragments.HomeTimelineFragment;
+import fragments.TweetsPagerAdapter;
 
 public class TimelineActivity extends AppCompatActivity {
 
 
-    TwitterClient client;
-    TweetAdapter tweetAdapter;
-    ArrayList<Tweet> tweets;
-    RecyclerView rvTweets;
-    private SwipeRefreshLayout swipeContainer;
+
+    public SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
+    MenuItem searchItem;
+    SearchView searchView;
+    Context context;
+    ViewPager viewPager;
+    TweetsPagerAdapter pagerAdapter;
 
 
     private final int REQUEST_CODE = 20;
@@ -42,19 +40,19 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        context = this;
+
+        viewPager= (ViewPager) findViewById(R.id.viewpager);
+        pagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(pagerAdapter);
+
+        new HomeTimelineFragment();
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
 
-        client = TwitterApp.getRestClient();
 
-
-        rvTweets = (RecyclerView) findViewById(R.id.rvTweet);
-        tweets = new ArrayList<>();
-        tweetAdapter = new TweetAdapter(tweets);
-
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
-        rvTweets.setAdapter(tweetAdapter);
-
-        populateTimeline();
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -65,6 +63,7 @@ public class TimelineActivity extends AppCompatActivity {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 fetchTimelineAsync(0);
+
             }
         });
         // Configure the refreshing colors
@@ -72,29 +71,40 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
     }
+
     public void fetchTimelineAsync(int page) {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
         // getHomeTimeline is an example endpoint.
         showProgressBar();
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response)  {
-                // Remember to CLEAR OUT old items before appending in the new ones
-                tweetAdapter.clear();
-                // ...the data has come back, add new items to your adapter...
-                populateTimeline();
-                // Now we call setRefreshing(false) to signal refresh has finished
-                swipeContainer.setRefreshing(false);
-            }
+        if (viewPager.getCurrentItem() == 0) {
 
-            public void onFailure(Throwable e) {
-                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
-            }
-        });
+            pagerAdapter.homeTimelineFragment.tweetAdapter.mTweets.clear();
+            pagerAdapter.homeTimelineFragment.tweetAdapter.notifyDataSetChanged();
+            pagerAdapter.homeTimelineFragment.populateTimeline();
+
+            //following wont let the code continue until the update is over
+            while(pagerAdapter.homeTimelineFragment.updated = false);
+        }
+        else{
+            pagerAdapter.mentionsTimelineFragment.tweetAdapter.mTweets.clear();
+            pagerAdapter.mentionsTimelineFragment.tweetAdapter.notifyDataSetChanged();
+            pagerAdapter.mentionsTimelineFragment.populateTimeline();
+
+            //following wont let the code continue until the update is over
+
+            while(pagerAdapter.mentionsTimelineFragment.updated = false);
+
+        }
+        //sets the refresh off
+        swipeContainer.setRefreshing(false);
+        hideProgressBar();
+
     }
+
 
 
 
@@ -104,8 +114,41 @@ public class TimelineActivity extends AppCompatActivity {
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         // Extract the action-view from the menu item
         ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+
+        searchItem = menu.findItem(R.id.app_bar_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        // sets the query listener
+        searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent i = new Intent(context, SearchActivity.class);
+
+                i.putExtra("q", query);
+
+                startActivityForResult(i, REQUEST_CODE);
+                return true;
+            }
+
+            //just because you must:
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+
         // Return to finish
         return super.onPrepareOptionsMenu(menu);
+
+    }
+
+    public void query(MenuItem view){
+        //makes the search bar big
+        searchItem.expandActionView();
+        searchView.requestFocus();
+
     }
 
     public void showProgressBar() {
@@ -122,6 +165,8 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
         return true;
     }
 
@@ -134,6 +179,13 @@ public class TimelineActivity extends AppCompatActivity {
 
         }
 
+
+
+    public void onProfileView(MenuItem item) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
@@ -141,59 +193,12 @@ public class TimelineActivity extends AppCompatActivity {
             // Extract name value from result extras
             Tweet tweet = data.getParcelableExtra(ComposeActivity.TWEET_KEY);
             Log.d("onActivityResult, ", "tweet is null?" + String.valueOf( tweet== null));
-            tweets.add(0, tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
+
+
+            ((HomeTimelineFragment) pagerAdapter.getItem(viewPager.getCurrentItem())).addTweet(tweet);
             // Toast the name to display temporarily on screen
             Toast.makeText(this, "Tweet Posted", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void populateTimeline(){
-        //showProgressBar();
-        client.getHomeTimeline(new JsonHttpResponseHandler(){
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TwitterClient", response.toString());
-
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d("TwitterClient", response.toString());
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                hideProgressBar();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();            }
-        });
-
-
-
-    }
 }

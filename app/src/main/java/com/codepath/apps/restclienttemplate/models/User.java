@@ -17,6 +17,10 @@ public class User implements Parcelable {
     public String sreenName;
     public String profileImageUrl;
 
+    public String tagline;
+    public int followersCount;
+    public int followingCount;
+
     //deserialize Json
 
     public static User fromJSON(JSONObject json) throws JSONException{
@@ -25,6 +29,11 @@ public class User implements Parcelable {
         user.name = json.getString("name");
         user.uid = json.getLong("id");
         user.sreenName = json.getString("screen_name");
+        user.tagline = json.getString("description");
+        user.followersCount = json.getInt("followers_count");
+        user.followingCount = json.getInt("friends_count");
+
+
         user.profileImageUrl = json.getString("profile_image_url");
 
         return user;

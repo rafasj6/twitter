@@ -2,6 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/app_bar_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
+        app:showAsAction="always|collapseActionView"
+        android:onClick="query"
+
+        />
+    <item
+        android:id="@+id/miProfile"
+        android:icon="@drawable/ic_profile"
+        android:onClick="onProfileView"
+        android:title="Profile"
+        app:showAsAction="always">
+
+    </item>
+    <item
         android:id="@+id/miCompose"
         android:icon="@drawable/ic_vector_compose"
         android:onClick="onComposeAction"
@@ -9,13 +26,6 @@
         android:tint="@color/medium_gray"
         app:showAsAction="always"></item>
 
-    <item
-        android:id="@+id/miProfile"
-        android:icon="@drawable/ic_profile"
-        app:showAsAction="ifRoom|withText"
-        android:title="Profile">
-
-    </item>
     <item
         android:id="@+id/miActionProgress"
         android:title="Loading..."
